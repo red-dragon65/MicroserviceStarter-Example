@@ -1,0 +1,39 @@
+
+# This config file is used to set the routing to services
+
+
+#---------------- All Endpoints ----------------
+
+# Available via gateway:
+# http://localhost:8500/servicea/breaker/eureka-protected-call
+# http://localhost:8500/servicea/config/get-config-data
+# http://localhost:8500/servicea/eureka/make-eureka-call
+# http://localhost:8500/servicea/balanced/make-rest-call
+
+# Not accessible via gateway:
+# http://localhost:8010/simple/hello
+
+# http://localhost:8100/breaker/eureka-protected-call
+# http://localhost:8100/config/get-config-data
+# http://localhost:8100/eureka/make-eureka-call
+# http://localhost:8100/balanced/make-rest-call
+
+
+
+# Routing config
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Set the routing behaviour to other services
+        - id: service-a-routing # Set the id of this route
+          uri: lb://service-a/  # Set the name of the service being called
+          predicates:
+            - Method=GET # Only accept GET requests
+            - Path=/servicea/** # Set the base url for routing
+          filters:
+            - RewritePath=/servicea(?<segment>/?.*), $\{segment} # This removes the /service prefix from the path
+        #- id: another-services-routing
+        #  uri: lb://service-name/
+        #  predicates:
+        #   - Path=/url/to/service/controller/endpoint

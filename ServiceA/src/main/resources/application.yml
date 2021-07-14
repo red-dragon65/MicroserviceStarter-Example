@@ -1,0 +1,14 @@
+
+# This file is only used to specify resilience4j configuration
+
+# Circuit breaker config
+resilience4j.ratelimiter:
+  instances:
+    basicService:
+      limitForPeriod: 1 #The max number of calls that can be made during a period. Additional calls forwards the user to the fallback method.
+      limitRefreshPeriod: 10s #The length of the period in nano seconds
+      timeoutDuration: 5s #The time the caller will have to wait for a call to go through
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
+
+

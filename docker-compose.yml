@@ -1,0 +1,59 @@
+version: '2.1' # Docker compose version
+services:
+
+
+  config-server:
+    # Build image
+    build: Config-Server # Maven module name
+    environment:
+      # Important for clients to register with eureka
+      # You must specify the docker container name, not localhost
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    depends_on:
+      discovery-server:
+        # The service below must be running first
+        condition: service_healthy
+    # Map ports
+    ports:
+      - 8888:8888
+
+
+  discovery-server:
+    build: Discovery-Server
+    ports:
+      - 8761:8761
+
+
+  gateway-service:
+    build: Gateway-Service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+    ports:
+      - 8500:8500
+
+
+  hidden-service:
+    build: Hidden-Service
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+    ports:
+    - 8010:8010
+
+
+  service-a:
+    build: ServiceA
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    ports:
+    - 8100:8100
