@@ -1,11 +1,9 @@
 
-# Spring Cloud Microservice Boilerplate Code
+# Spring Cloud Microservice Boilerplate Project
 
 This project was created to help jump start microservice development using Spring Cloud. Due to **Netflix OSS**
 being phased out, this projects shows microservice pattern implementation using Spring Cloud native dependencies.
 - *Note: Although Netflix OSS is in maintenance mode, this project uses Eureka which is still supported.*
-
----
 
 ### Implemented Microservice Patterns
 | Design Pattern | Description | Service | Tool |
@@ -29,16 +27,12 @@ being phased out, this projects shows microservice pattern implementation using 
 - Continuous delivery [jenkins]
 - Testing services and integration
 
----
-
 ## Projects and dependencies
 - `Discovery-Server`: Eureka Server
 - `Hidden-Service`: Eureka Discovery Client, Spring Web
 - `Config-Server`: Eureka Discovery Client, Spring Config Server
 - `ServiceA`: Eureka Discovery Client, Spring Web, Spring Reactive Web, Spring Cloud Circuit Breaker (Resilience4j), Spring AOP, Spring Cloud LoadBalancer, Spring Config Client, Spring Cloud Bootstrap
 - `Gateway-Service`: Eureka Discovery Client, Spring Cloud Gateway
-
----
 
 ## Detailed Design Pattern Implementation
 Below you can see how services work to implement each microservice design pattern.
@@ -74,8 +68,6 @@ Below you can see how services work to implement each microservice design patter
 - `ServiceA`: Makes a circuit breaker protected call to the 'Hidden-Service'
 - `Hidden-Service`: A basic service that can be called by a client
 
----
-
 ## Notes
 - This project was created in a maven module format for easier development. There is a parent pom.xml, and child pom.xml.
   Make sure you do not but conflicting service dependencies in the parent pom.xml.
@@ -88,8 +80,6 @@ Below you can see how services work to implement each microservice design patter
 ### Multi-module project
 - Make sure you update the pom.xml file of any child service added. It's parent needs to be updated to the
   projects parent, duplicate info needs to be removed, and it's a good idea to specify the .jar output name.
-
----
 
 ## Running the project
 
