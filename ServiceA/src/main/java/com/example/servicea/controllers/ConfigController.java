@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This controller demonstrates how an external configuration file retrieved
+ * from the config server affects property values.
+ */
 /*
 This lets the app update the @Value variables if the external global configuration changes!
 
@@ -24,24 +28,32 @@ folder by setting up /monitor with spring-cloud-config-monitor and spring-cloud-
 @RequestMapping("/config")
 public class ConfigController {
 
-
-    // This holds get the value from the properties file
-    // that was retrieved from the Config server.
+    /**
+     * This holds the value retrieved from the properties file that
+     * was retrieved from the Config Server.
+     */
     @Autowired
     private ConfigClientConfiguration externalProperty;
 
-    // This holds get the value from the properties file
-    // that was retrieved from the Config server.
+    /**
+     * This holds the value retrieved from the properties file that
+     * was retrieved from the Config Server.
+     */
     @Value("${external.other.property}")
     private String externalOtherProperty;
 
-    // This holds the value from the local properties file
+    /**
+     * This holds the value retrieved from the local properties file
+     */
     @Value("${local.custom.property}")
     private String localProperty;
 
 
 
-    // Returns some data found in the config files
+    /**
+     * Gets the property file values and returns them as a string.
+     * @return The internal and external property file values.
+     */
     @GetMapping("/get-config-data")
     public String getConfigData(){
 

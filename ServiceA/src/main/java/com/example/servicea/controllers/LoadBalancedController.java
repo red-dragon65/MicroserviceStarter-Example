@@ -12,6 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * This controller finds a 'hidden-service' service instance using client-side load balancing.
+ * Then, it makes a call using either a 'RestTemplate', or a 'WebClient'.
+ */
 @RestController
 @RequestMapping("/balanced")
 public class LoadBalancedController {
@@ -22,12 +26,18 @@ public class LoadBalancedController {
     -------------------------------------------------------
      */
 
-    // Create a load balanced REST template object
+    /**
+     * Creates a load balanced REST template object used for
+     * making REST calls.
+     */
     @Autowired
     @LoadBalanced
     private RestTemplate restTemplate;
 
-    // This calls the 'hidden-service' using a load balanced rest template
+    /**
+     * This calls a 'hidden-service' instance using a client-side load balanced rest template.
+     * @return The instance info retrieved from the 'hidden-service'.
+     */
     @GetMapping("/make-rest-call")
     public String restCall(){
 
@@ -38,7 +48,10 @@ public class LoadBalancedController {
         return response.getBody();
     }
 
-    // Define a load balanced REST template object
+    /**
+     * This defines a load balanced REST template object.
+     * @return A load balanced RestTemplate object.
+     */
     @Bean
     @LoadBalanced
     public RestTemplate getRestTemplate(){
@@ -60,12 +73,21 @@ public class LoadBalancedController {
     -------------------------------------------------------
      */
 
-    // Create a load balanced WebClient.Builder
+    /**
+     * Creates a load balanced WebClient.Builder object used
+     * for making endpoint calls.
+     */
     @Autowired
     @LoadBalanced
     private WebClient.Builder loadBalancedWebClientBuilder;
 
     // This calls the 'hidden-service' using a load balanced web client
+
+    /**
+     * This calls a 'hidden-service' instance using a client-side load balanced
+     * WebClient.Builder object.
+     * @return The instance info retrieved from the 'hidden-service'.
+     */
     @GetMapping("/make-reactive-call")
     public Mono<String> reactiveCall(){
 
@@ -77,7 +99,10 @@ public class LoadBalancedController {
         return response;
     }
 
-    // Define a load balanced WebClient.Builder
+    /**
+     * Defines a load balanced WebClient.Builder.
+     * @return A load balanced WebClient.Builder object.
+     */
     @Bean
     @LoadBalanced
     WebClient.Builder builder() {

@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * This controller makes a simple call to the 'hidden-service' using the
+ * Eureka discovery server to find instances that are running.
+ */
 @RestController
 @RequestMapping("/eureka")
 public class EurekaController {
 
 
-    // This is used to find services we can call by accessing the Eureka discovery server
+    /**
+     * THis is used to find services we can call by accessing the Eureka discovery server.
+     */
     @Autowired
     private EurekaClient eClient;
 
@@ -25,13 +31,18 @@ public class EurekaController {
     //@Autowired
     //private DiscoveryClient dClient;
 
-    // This lets us call REST APIs for other services
+    /**
+     * This lets us call REST APIs for other services.
+     */
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
 
 
-    // This calls the 'hidden-service' service using the Discovery Server to find an instance of the service
+    /**
+     * This calls the 'hidden-service' service using the Discovery Server to find an instance of the service.
+     * @return The instance information about the 'hidden-service' instance that is called.
+     */
     @RequestMapping("/make-eureka-call")
     public String eurekaCall(){
 

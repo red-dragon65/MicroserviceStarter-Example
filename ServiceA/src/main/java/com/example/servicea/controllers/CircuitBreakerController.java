@@ -20,18 +20,25 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/breaker")
 public class CircuitBreakerController {
 
-
-    // This is used to find services we can call by accessing the Eureka discovery server
+    /**
+     * This is used to find services we can call by accessing the Eureka discovery server.
+     */
     @Autowired
     private EurekaClient eClient;
 
-    // This lets us call REST APIs for other services
+    /**
+     * This lets us call REST APIs for other services.
+     */
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
 
 
-    // This calls the 'hidden-service' service using the Discovery Server to find an instance of the service
+    /**
+     * This calls the 'hidden-service' service using the Discovery Server to find an instance of the service.
+     * This method is also protected with a circuit breaker using a fallback method and a rate limiter.
+     * @return The instance information about the 'hidden-service' instance that is called.
+     */
     @CircuitBreaker(name="hiddenService", fallbackMethod="callFailure") // Specify fallback method in case of failure
     @RateLimiter(name="hiddenService") // Rate limit this call
     @RequestMapping("/eureka-protected-call")
@@ -59,8 +66,12 @@ public class CircuitBreakerController {
         return response.toString();
     }
 
-    // This is a fallback method that will get called in case
-    // the above endpoint hits an exception
+    /**
+     * This is a fallback method that will get called in case the 'eurekaCall' method
+     * (/eureka-protected-call) runs into an exception.
+     * @param e The exception thrown by the original method.
+     * @return The default message to return if the original method fails.
+     */
     public String callFailure(Exception e){
 
         return "Failed to connect to the 'hidden-service' endpoint...";
